@@ -12,8 +12,6 @@ import processing.core.PVector;
 public class BaseDefenderWorld extends GameEngine {
     private IPersistence persistence;
     private EnemySpawner enemySpawner;
-    private Base base;
-    private Barrel barrel;
 
     public static void main(String[] args) {
         PApplet.main(new String[]{"nl.han.ica.basedefenderworld.BaseDefenderWorld"});
@@ -42,11 +40,11 @@ public class BaseDefenderWorld extends GameEngine {
     }
 
     private void createObjects() {
-        base = new Base(this, 100);
-        barrel = new Barrel(100, new PVector(400, 300));
-        addGameObject(base, getWidth() / 2, getHeight() / 2);
-        addGameObject(barrel, getWidth() / 2, getHeight() / 2);
-        System.out.println(getWidth());
-        System.out.println(getHeight());
+        int baseSize = 100;
+        Base base = new Base(this, baseSize);
+        Barrel barrel = new Barrel(baseSize, new PVector(400, 300));
+
+        addGameObject(base, getWidth() / 2 - baseSize / 2, getHeight() / 2 - baseSize / 2,1);
+        addGameObject(barrel, getWidth() / 2, getHeight() / 2,2);
     }
 }
