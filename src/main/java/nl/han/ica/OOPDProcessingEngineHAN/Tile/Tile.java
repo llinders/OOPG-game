@@ -6,7 +6,7 @@ import nl.han.ica.OOPDProcessingEngineHAN.Objects.Sprite;
  * The Tile Object is used to bind a Sprite to an location in a TileMap
  * Extend Tile to create different types of tiles.
  */
-public class Tile {
+public abstract class Tile {
 
     private Sprite sprite;
 

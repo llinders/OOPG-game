@@ -471,8 +471,8 @@ public abstract class GameObject implements IKeyInput, IMouseInput, PConstants {
         else if(otherObjectAtTopLeftOfMainObject(angle)){
             distance = calculateDistanceTopLeftAngle(mainObjectTopLeftX, mainObjectTopLeftY, otherObjectBottomRightX, otherObjectBottomRightY);
         }
-        return distance;
-    }
+            return distance;
+        }
 
     private boolean otherObjectAtTopLeftOfMainObject(double angle) {
         return angle >= 270 && angle < 360;

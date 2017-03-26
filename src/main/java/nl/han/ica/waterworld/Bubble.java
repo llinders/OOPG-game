@@ -1,9 +1,15 @@
 package nl.han.ica.waterworld;
 
+import nl.han.ica.OOPDProcessingEngineHAN.Collision.CollidedTile;
 import nl.han.ica.OOPDProcessingEngineHAN.Collision.ICollidableWithGameObjects;
+import nl.han.ica.OOPDProcessingEngineHAN.Collision.ICollidableWithTiles;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
 import nl.han.ica.OOPDProcessingEngineHAN.Sound.Sound;
+import nl.han.ica.OOPDProcessingEngineHAN.Tile.Tile;
+import nl.han.ica.OOPDProcessingEngineHAN.Tile.TileType;
+import nl.han.ica.waterworld.tiles.BoardsTile;
 import processing.core.PGraphics;
+import processing.core.PVector;
 
 import java.util.List;
 
@@ -11,11 +17,11 @@ import java.util.List;
  * @author Ralph Niels
  * Bel-klasse
  */
-public class Bubble extends GameObject implements ICollidableWithGameObjects{
-
+public class Bubble extends GameObject implements ICollidableWithGameObjects, ICollidableWithTiles {
     private final Sound popSound;
     private WaterWorld world;
     private int bubbleSize;
+    private boolean hasCollided;
 
     /**
      * Constructor
@@ -45,8 +51,14 @@ public class Bubble extends GameObject implements ICollidableWithGameObjects{
     @Override
     public void draw(PGraphics g) {
         g.ellipseMode(g.CORNER); // Omdat cirkel anders vanuit midden wordt getekend en dat problemen geeft bij collisiondetectie
-        g.stroke(0, 50, 200, 100);
-        g.fill(0, 50, 200, 50);
+        if (!hasCollided){
+            g.stroke(0, 50, 200, 100);
+            g.fill(0, 50, 200, 50);
+        }
+        else {
+            g.stroke(255, 0, 0, 100);
+            g.fill(255, 0, 0, 50);
+        }
         g.ellipse(getX(), getY(), bubbleSize, bubbleSize);
     }
 
@@ -58,6 +70,18 @@ public class Bubble extends GameObject implements ICollidableWithGameObjects{
                 popSound.play();
                 world.deleteGameObject(this);
                 world.increaseBubblesPopped();
+            }
+            else if (g instanceof Player){
+                hasCollided = true;
+            }
+        }
+    }
+
+    @Override
+    public void tileCollisionOccurred(List<CollidedTile> collidedTiles){
+        for (CollidedTile ct : collidedTiles){
+            if(ct.theTile instanceof wallTile) {
+                setySpeed(0);
             }
         }
     }
