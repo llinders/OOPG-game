@@ -10,7 +10,7 @@ import processing.core.PGraphics;
 
 public class Bullet extends GameObject implements ICollidableWithGameObjects {
     private BaseDefenderWorld world;
-    final private float FRICTION = 0.012f;
+    //final private static float FRICTION = 0.008f;
     private int radius, damage;
 
     public Bullet(BaseDefenderWorld world, int radius, int damage) {
@@ -21,7 +21,7 @@ public class Bullet extends GameObject implements ICollidableWithGameObjects {
         setHeight(radius);
         setWidth(radius);
 
-        setFriction(FRICTION);
+        //setFriction(FRICTION);
     }
 
     public void update() {

@@ -23,6 +23,7 @@ public class Barrel extends GameObject implements ICollidableWithGameObjects {
 
     public void draw(PGraphics g){
         float angle = (float) Math.atan2(mouseY - loc.y, mouseX - loc.x);
+        System.out.println(angle);
         x = length * (float) Math.cos(angle) + loc.x;
         y = length * (float) Math.sin(angle) + loc.y;
         g.stroke(0);

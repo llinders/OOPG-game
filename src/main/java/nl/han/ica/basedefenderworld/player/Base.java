@@ -5,7 +5,6 @@ import nl.han.ica.OOPDProcessingEngineHAN.Alarm.IAlarmListener;
 import nl.han.ica.OOPDProcessingEngineHAN.Collision.ICollidableWithGameObjects;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
 import nl.han.ica.basedefenderworld.BaseDefenderWorld;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private int size, health, bulletDamage, unclaimedPowerups, mouseX, mouseY;
     private float bulletSpeed, reloadTime, regenTime;
-    private boolean firing;
+    private boolean firing, gunIsReloaded;
 
     public Base(BaseDefenderWorld world, int size) {
         this.world = world;
@@ -26,6 +25,7 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
         bulletSpeed = 7.8f;
         regenTime = 30.0f;
         reloadTime = 0.75f;
+        gunIsReloaded = true;
 
         setWidth(size);
         setHeight(size);
@@ -35,6 +35,7 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
 
     @Override
     public void update() {
+        //check if any of the bullets are out of the world, if so remove them
         for (int i = bullets.size() - 1; i >= 0; i--) {
             Bullet bullet = bullets.get(i);
             if (bullet.getY() > world.getHeight() || bullet.getY() < 0 || bullet.getX() < 0 || bullet.getX() > world.getWidth()) {
@@ -46,22 +47,26 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
 
     @Override
     public void draw(PGraphics g) {
-        g.noStroke();
+        /*g.noStroke();
         g.fill(255, 0, 0);
         g.ellipseMode(PConstants.CORNER);
-        g.ellipse(getX(), getY(), size, size);
+        g.ellipse(getX(), getY(), size, size);*/
     }
 
+    /**
+     * Starts an alarm to delay the amount of bullets you can shoot per second
+     */
     private void startAlarm() {
-        Alarm alarm = new Alarm("Fire delay",reloadTime);
+        Alarm alarm = new Alarm("Fire delay", reloadTime);
         alarm.addTarget(this);
         alarm.start();
     }
 
     @Override
     public void triggerAlarm(String alarmName) {
-        if (firing)
+        if (firing && gunIsReloaded)
             fireBullet(mouseX, mouseY);
+        gunIsReloaded = true;
         startAlarm();
     }
 
@@ -72,6 +77,11 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
 
     @Override
     public void mousePressed(int x, int y, int button) {
+        if (gunIsReloaded){
+            fireBullet(x, y);
+            gunIsReloaded = false;
+
+        }
         firing = true;
         mouseX = x;
         mouseY = y;
@@ -88,9 +98,14 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
         mouseY = y;
     }
 
+    /**
+     * Fires a bullet towards the given coordinates
+     * @param x X position
+     * @param y Y position
+     */
     private void fireBullet(int x, int y){
         float angle = getAngleFrom(x, y);
-        Bullet bullet = new Bullet(world, size/10, bulletDamage);
+        Bullet bullet = new Bullet(world, size/25, bulletDamage);
         world.addGameObject(bullet, getX() + size / 2, getY() + size / 2, 0);
         bullets.add(bullet);
         bullet.setDirection(angle);
@@ -117,6 +132,4 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
     public void setRegenTime(float regenTime) {
         this.regenTime = regenTime;
     }
-
-
 }
