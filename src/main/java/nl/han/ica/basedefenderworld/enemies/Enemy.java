@@ -9,7 +9,7 @@ import processing.core.PApplet;
 
 public abstract class Enemy extends SpriteObject implements ICollidableWithGameObjects {
     protected BaseDefenderWorld world;
-    protected int health;
+    protected int maxHealth, health;
     protected float movementSpeed;
     //protected float attackSpeed;
     protected static int nEnemiesKilled;
@@ -29,7 +29,12 @@ public abstract class Enemy extends SpriteObject implements ICollidableWithGameO
             System.out.println(nEnemiesKilled);
         }
     }
-    
+
+    @Override
+    public void updateSprite(Sprite sprite){
+        super.updateSprite(sprite);
+    }
+
     public abstract void attack(GameObject g);
 
     public static int getAmountOfEnemiesKilled() {

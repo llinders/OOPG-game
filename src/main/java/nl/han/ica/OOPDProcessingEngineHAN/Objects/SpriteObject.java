@@ -31,7 +31,11 @@ public abstract class SpriteObject extends GameObject {
 	{
 		g.image(sprite.getPImage(), x, y);
 	}
-	
+
+	public void updateSprite(Sprite sprite){
+		this.sprite = sprite;
+	}
+
 	/**
 	 * Get the PImage of the Sprite.
 	 * @return PImage

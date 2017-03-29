@@ -47,10 +47,7 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
 
     @Override
     public void draw(PGraphics g) {
-        /*g.noStroke();
-        g.fill(255, 0, 0);
-        g.ellipseMode(PConstants.CORNER);
-        g.ellipse(getX(), getY(), size, size);*/
+
     }
 
     /**
@@ -111,7 +108,7 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
     private void fireBullet(int x, int y){
         setX(world.width/2-size/2);
         float angle = getAngleFrom(x,y);
-        Bullet bullet = new Bullet(world, size/25, bulletDamage);
+        Bullet bullet = new Bullet(size/25, bulletDamage);
         world.addGameObject(bullet, world.width/2, world.height/2, 0);
         bullets.add(bullet);
         bullet.setDirection(angle);

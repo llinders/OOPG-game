@@ -1,25 +1,19 @@
 package nl.han.ica.basedefenderworld.player;
 
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
-import nl.han.ica.basedefenderworld.BaseDefenderWorld;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 
 public class Bullet extends GameObject {
-    private BaseDefenderWorld world;
-    //final private static float FRICTION = 0.008f;
     private int radius, damage;
 
-    public Bullet(BaseDefenderWorld world, int radius, int damage) {
-        this.world = world;
+    public Bullet(int radius, int damage) {
         this.radius = radius;
         this.damage = damage;
-
-        setHeight(radius);
-        setWidth(radius);
-
-        //setFriction(FRICTION);
+        setHeight(1);
+        setWidth(1);
     }
+
 
     public void update() {
 

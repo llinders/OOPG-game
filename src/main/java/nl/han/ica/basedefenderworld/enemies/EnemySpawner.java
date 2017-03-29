@@ -75,7 +75,7 @@ public class EnemySpawner implements IAlarmListener {
                 break;
             case SHIP:
                 Sprite shipSprite = new Sprite("src/main/java/nl/han/ica/basedefenderworld/data/enemies/ship1.png");
-                Ship ship = new Ship(world, shipSprite, 50, 1.2f, 30, (int)pos.x, (int)pos.y);
+                Ship ship = new Ship(world, shipSprite, 150, 1.2f, 30, (int)pos.x, (int)pos.y);
                 world.addGameObject(ship, (int)pos.x, (int)pos.y);
                 break;
         }
