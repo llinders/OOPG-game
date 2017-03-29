@@ -121,7 +121,7 @@ public class Sprite {
 			{
 				Gif gifje = new Gif(applet, fileName);
 				gifje.play();
-				
+
 				return gifje;
 			}
 			else

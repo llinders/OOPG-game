@@ -1,14 +1,11 @@
 package nl.han.ica.basedefenderworld.player;
 
-import java.util.List;
-
-import nl.han.ica.OOPDProcessingEngineHAN.Collision.ICollidableWithGameObjects;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
 import nl.han.ica.basedefenderworld.BaseDefenderWorld;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 
-public class Bullet extends GameObject implements ICollidableWithGameObjects {
+public class Bullet extends GameObject {
     private BaseDefenderWorld world;
     //final private static float FRICTION = 0.008f;
     private int radius, damage;
@@ -28,18 +25,14 @@ public class Bullet extends GameObject implements ICollidableWithGameObjects {
 
     }
 
+    public int getDamage() {
+        return damage;
+    }
+
     public void draw(PGraphics g) {
         g.noStroke();
-        g.fill(0, 0, 200);
+        g.fill(110,255,0);
         g.ellipseMode(PConstants.CENTER);
         g.ellipse(getX(), getY(), radius, radius);
     }
-
-    @Override
-    public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
-        for (GameObject gameObject : collidedGameObjects) {
-
-        }
-    }
-
 }

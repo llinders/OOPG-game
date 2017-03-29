@@ -2,24 +2,17 @@ package nl.han.ica.basedefenderworld.player;
 
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.Sprite;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.SpriteObject;
-import nl.han.ica.basedefenderworld.BaseDefenderWorld;
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PImage;
 
 public class Cannon extends SpriteObject {
     private float x, y, length;
     private int mouseX, mouseY;
     private float rotatiehoek;
 
-    public Cannon(BaseDefenderWorld world) {
+    public Cannon() {
         this(new Sprite("src/main/java/nl/han/ica/basedefenderworld/data/Cannon.png"));
         rotatiehoek = 45;
-
-        PImage cannonImg = world.loadImage("src/main/java/nl/han/ica/basedefenderworld/data/Cannon.png");
-        setWidth(cannonImg.width);
-        setHeight(cannonImg.height);
-        System.out.println(getWidth());
     }
 
     private Cannon(Sprite sprite) {

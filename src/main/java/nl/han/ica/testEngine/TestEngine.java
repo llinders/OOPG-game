@@ -13,8 +13,8 @@ public class TestEngine extends GameEngine {
 
     @Override
     public void setupGame(){
-        createObjects();
         createView(800, 600);
+        createObjects();
     }
 
     @Override
@@ -23,12 +23,15 @@ public class TestEngine extends GameEngine {
     }
 
     private void createObjects(){
-        Skeleton skeleton = new Skeleton(new Sprite("nl/han/ica/basedefenderworld/data/animations/skeleton_walking.gif"), 8);
-        addGameObject(skeleton, width/2, height/2);
+        Skeleton skeleton = new Skeleton();
+        skeleton.setWidth(224);
+        skeleton.setHeight(364);
+        addGameObject(skeleton, 300, 400);
     }
 
     private void createView(int width, int height){
         View view = new View(width, height);
+        view.setBackground(220, 220, 220);
         setView(view);
         size(width, height);
     }

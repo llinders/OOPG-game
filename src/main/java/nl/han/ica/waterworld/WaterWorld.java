@@ -10,6 +10,7 @@ import nl.han.ica.OOPDProcessingEngineHAN.Tile.TileMap;
 import nl.han.ica.OOPDProcessingEngineHAN.Tile.TileType;
 import nl.han.ica.OOPDProcessingEngineHAN.View.EdgeFollowingViewport;
 import nl.han.ica.OOPDProcessingEngineHAN.View.View;
+import nl.han.ica.testEngine.*;
 import nl.han.ica.waterworld.tiles.BoardsTile;
 import processing.core.PApplet;
 
@@ -99,6 +100,11 @@ public class WaterWorld extends GameEngine {
      * Maakt de spelobjecten aan
      */
     private void createObjects() {
+        Skeleton skeleton = new Skeleton();
+        skeleton.setWidth(224);
+        skeleton.setHeight(364);
+        addGameObject(skeleton, 300, 400);
+
         player = new Player(this);
         addGameObject(player, 100, 100);
         Swordfish sf=new Swordfish(this);
@@ -107,8 +113,6 @@ public class WaterWorld extends GameEngine {
         sf2.setSpeed(4);
         addGameObject(sf,200,200);
         addGameObject(sf2,200, 250);
-
-
     }
 
     /**

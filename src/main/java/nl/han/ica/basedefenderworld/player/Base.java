@@ -5,6 +5,7 @@ import nl.han.ica.OOPDProcessingEngineHAN.Alarm.IAlarmListener;
 import nl.han.ica.OOPDProcessingEngineHAN.Collision.ICollidableWithGameObjects;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
 import nl.han.ica.basedefenderworld.BaseDefenderWorld;
+import nl.han.ica.basedefenderworld.enemies.Ship;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
@@ -17,19 +18,18 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
     private float bulletSpeed, reloadTime, regenTime;
     private boolean firing, gunIsReloaded;
 
+
     public Base(BaseDefenderWorld world, int size) {
         this.world = world;
         this.size = size;
         health = 100;
-        bulletDamage = 5;
+        bulletDamage = 28;
         bulletSpeed = 7.8f;
         regenTime = 30.0f;
         reloadTime = 0.75f;
         gunIsReloaded = true;
-
         setWidth(size);
         setHeight(size);
-
         startAlarm();
     }
 
@@ -72,7 +72,12 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
 
     @Override
     public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
+        for (GameObject g:collidedGameObjects) {
+            if (g instanceof Ship) {
+                g.setSpeed(0);
+            }
 
+        }
     }
 
     @Override
@@ -104,13 +109,18 @@ public class Base extends GameObject implements ICollidableWithGameObjects, IAla
      * @param y Y position
      */
     private void fireBullet(int x, int y){
-        float angle = getAngleFrom(x, y);
+        setX(world.width/2-size/2);
+        float angle = getAngleFrom(x,y);
         Bullet bullet = new Bullet(world, size/25, bulletDamage);
-        world.addGameObject(bullet, getX() + size / 2, getY() + size / 2, 0);
+        world.addGameObject(bullet, world.width/2, world.height/2, 0);
         bullets.add(bullet);
         bullet.setDirection(angle);
         bullet.setSpeed(bulletSpeed);
+    }
 
+
+    public int getHealth() {
+        return health;
     }
 
     public void setHealth(int health) {

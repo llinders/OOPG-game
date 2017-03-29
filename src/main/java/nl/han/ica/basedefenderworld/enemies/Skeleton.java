@@ -1,4 +1,4 @@
-package nl.han.ica.testEngine;
+package nl.han.ica.basedefenderworld.enemies;
 
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.AnimatedSpriteObject;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.Sprite;
