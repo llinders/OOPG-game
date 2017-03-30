@@ -1,7 +1,6 @@
 package nl.han.ica.testEngine;
 
 import nl.han.ica.OOPDProcessingEngineHAN.Engine.GameEngine;
-import nl.han.ica.OOPDProcessingEngineHAN.Objects.Sprite;
 import nl.han.ica.OOPDProcessingEngineHAN.View.View;
 import processing.core.PApplet;
 
@@ -23,10 +22,8 @@ public class TestEngine extends GameEngine {
     }
 
     private void createObjects(){
-        Skeleton skeleton = new Skeleton();
-        skeleton.setWidth(224);
-        skeleton.setHeight(364);
-        addGameObject(skeleton, 300, 400);
+        Player1 player = new Player1();
+        addGameObject(player, 300, 200);
     }
 
     private void createView(int width, int height){

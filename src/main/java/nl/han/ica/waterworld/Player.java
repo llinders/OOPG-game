@@ -26,7 +26,7 @@ public class Player extends AnimatedSpriteObject implements ICollidableWithGameO
      * @param world Referentie naar de wereld
      */
     public Player(WaterWorld world) {
-        super(new Sprite("src/main/java/nl/han/ica/waterworld/media/player.png"),2);
+        super(new Sprite(""),2);
         this.world=world;
         setCurrentFrameIndex(1);
         setFriction(0.05f);
