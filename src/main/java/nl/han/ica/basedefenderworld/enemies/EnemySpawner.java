@@ -18,7 +18,7 @@ public class EnemySpawner implements IAlarmListener {
     public EnemySpawner(BaseDefenderWorld world) {
         this.world = world;
         rnd = new Random();
-        round = 7;
+        round = 1;
         spawnDelay = calculateSpawnDelay();
 
         startAlarm();
@@ -27,10 +27,11 @@ public class EnemySpawner implements IAlarmListener {
     /**
      * Gets triggered when the spawn delay for enemies has expired
      * All calculations are performed, an enemy gets spawned and a new alarms starts
+     *
      * @param alarmName
      */
     public void triggerAlarm(String alarmName) {
-        round = calculateRound();
+        round = world.calculateRound();
         spawnDelay = calculateSpawnDelay();
         currentEnemy = getRandomEnemy();
         PVector pos = calculateRandomEnemyPos(currentEnemy);
@@ -45,15 +46,8 @@ public class EnemySpawner implements IAlarmListener {
     }
 
     /**
-     * Calculate the round you are currently in based on how many enemies have died
-     * @return the round number
-     */
-    private int calculateRound() {
-        return (int) Math.sqrt(Enemy.getAmountOfEnemiesKilled() - 2) + 1;
-    }
-
-    /**
      * Calculate the spawn delay of the enemies based on the round you are currently in
+     *
      * @return the spawn delay in seconds
      */
     private float calculateSpawnDelay() {
@@ -63,48 +57,62 @@ public class EnemySpawner implements IAlarmListener {
 
     /**
      * Calculate the position where the next enemy needs to be spawned
+     *
      * @param enemy an enemy from the EnemyKind enum for which the position needs to be calculated
      * @return a random position on the side of the map (ship on the left (water), skeletons on the right (land))
      */
     private PVector calculateRandomEnemyPos(EnemyKind enemy) {
-        int y;
         int x;
+        int y;
         switch (enemy) {
             case SKELETON:
                 int randomSkeleton = rnd.nextInt(2);
-                if(randomSkeleton == 0) {
-                    y = rnd.nextInt(world.getHeight() - 200);
-                    return new PVector(world.getWidth(), y);
-                }else{
-                    x = world.getWidth()-rnd.nextInt((int)(world.getWidth()/3.5));
-                    return new PVector(x,0);
+                switch (randomSkeleton){
+                    case 0:
+                        x = world.getWidth();
+                        y = rnd.nextInt(world.getHeight() - 200);
+                        break;
+                    case 1:
+                        x = world.getWidth() - rnd.nextInt((int) (world.getWidth() / 3.5));
+                        y = 0;
+                        break;
+                    default:
+                        x = 0;
+                        y = 0;
                 }
+                return new PVector(x, y);
             case SHIP:
                 int randomShip = rnd.nextInt(3);
-                if(randomShip == 0) {
-                    y = rnd.nextInt(world.getHeight());
-                    return new PVector(0, y);
-                }else if(randomShip == 1) {
-                    y = 0;
-                    x = rnd.nextInt((int)(world.getWidth()/4.5));
-                    return new PVector(x, y);
-                }else{
-                    y = world.getHeight();
-                    x = rnd.nextInt((int)(world.getWidth()/4.5));
-                    return new PVector(x,y);
-            }
+                switch (randomShip) {
+                    case 0:
+                        x = 0;
+                        y = rnd.nextInt(world.getHeight());
+                        break;
+                    case 1:
+                        x = rnd.nextInt((int) (world.getWidth() / 4.5));
+                        y = 0;
+                        break;
+                    case 2:
+                        x = rnd.nextInt((int) (world.getWidth() / 4.5));
+                        y = world.getHeight();
+                        break;
+                    default:
+                        x = 0;
+                        y = 0;
+                }
+                return new PVector(x, y);
         }
         return null;
     }
 
     /**
      * Return a random enemy based on chances
+     *
      * @return A random enemy from the EnemyKind enum
      */
     private EnemyKind getRandomEnemy() {
         float rndFloat = rnd.nextFloat();
-        System.out.println(round);
-        if (rndFloat <= (1/(round*0.2) >= 0.4 ? 1/(round*0.2) : 0.4))
+        if (rndFloat <= (1 / (round * 0.22) >= 0.45 ? 1 / (round * 0.22) : 0.45))
             return EnemyKind.SKELETON;
         else
             return EnemyKind.SHIP;
@@ -112,21 +120,36 @@ public class EnemySpawner implements IAlarmListener {
 
     /**
      * Handles the spawning process of enemies
+     *
      * @param currentEnemy the enemy that currently has to be spawned
-     * @param pos the posistion the enemy has to be spawned
+     * @param pos          the posistion the enemy has to be spawned
      */
     private void spawnEnemy(EnemyKind currentEnemy, PVector pos) {
+        if (world.paused)
+            return;
         switch (currentEnemy) {
             case SKELETON:
+                if (rnd.nextFloat() <= 0.04)
+                    spawnSkeletonWave(); //small chance to spawn a big wave of skeletons
                 Sprite skeletonSprite = new Sprite("src/main/java/nl/han/ica/basedefenderworld/data/animations/skeleton_walking.gif");
-                Skeleton skeleton = new Skeleton(world, skeletonSprite, 20, 1, (int) pos.x, (int) pos.y);
+                Skeleton skeleton = new Skeleton(world, skeletonSprite, 20, 1.1f * (round / 40 + 1), (int) pos.x, (int) pos.y);
                 world.addGameObject(skeleton, (int) pos.x, (int) pos.y);
                 break;
             case SHIP:
                 Sprite shipSprite = new Sprite("src/main/java/nl/han/ica/basedefenderworld/data/enemies/ship1.png");
-                Ship ship = new Ship(world, shipSprite, 150, 0.8f, (int) pos.x, (int) pos.y);
+                Ship ship = new Ship(world, shipSprite, 150, 0.6f * (round / 40 + 1), (int) pos.x, (int) pos.y);
                 world.addGameObject(ship, (int) pos.x, (int) pos.y);
                 break;
+        }
+    }
+
+    private void spawnSkeletonWave() {
+        Sprite skeletonSprite = new Sprite("src/main/java/nl/han/ica/basedefenderworld/data/animations/skeleton_walking.gif");
+        int waveSize = rnd.nextInt(round + 4) + 2;
+        for (int i = 0; i < waveSize; i++) {
+            PVector pos = calculateRandomEnemyPos(EnemyKind.SKELETON);
+            Skeleton skeleton = new Skeleton(world, skeletonSprite, 20, 1.1f, (int) pos.x, (int) pos.y);
+            world.addGameObject(skeleton, (int) pos.x, (int) pos.y);
         }
     }
 }

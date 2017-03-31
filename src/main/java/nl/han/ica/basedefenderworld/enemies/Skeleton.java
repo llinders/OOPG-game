@@ -69,6 +69,8 @@ public class Skeleton extends Enemy implements IAlarmListener {
 
     @Override
     public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
+        if (dying)
+            return; //no more collision can occur when the death animation is playing
         for (GameObject g : collidedGameObjects) {
             if (g instanceof Bullet) {
                 health -= ((Bullet) g).getDamage();

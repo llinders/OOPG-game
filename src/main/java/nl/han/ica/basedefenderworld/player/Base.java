@@ -5,7 +5,6 @@ import nl.han.ica.OOPDProcessingEngineHAN.Alarm.IAlarmListener;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
 import nl.han.ica.basedefenderworld.BaseDefenderWorld;
 import nl.han.ica.basedefenderworld.enemies.Enemy;
-import nl.han.ica.basedefenderworld.player.powerups.PowerupHandler;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ public class Base extends GameObject implements IAlarmListener {
     private float bulletSpeed, reloadTime, regenTime;
     private boolean firing, gunIsReloaded;
 
-
     public Base(BaseDefenderWorld world, int size) {
         this.world = world;
         this.size = size;
@@ -26,13 +24,14 @@ public class Base extends GameObject implements IAlarmListener {
         maxHealth = health;
         bulletDamage = 28;
         bulletSpeed = 7.8f;
-        regenTime = 30.0f;
-        reloadTime = 0.75f;
+        regenTime = 1.8f;
+        reloadTime = 0.8f;
         gunIsReloaded = true;
 
         setWidth(size);
         setHeight(size);
-        startAlarm();
+        startAlarmFireDelay();
+        startAlarmRegenDelay();
     }
 
     @Override
@@ -45,30 +44,56 @@ public class Base extends GameObject implements IAlarmListener {
                 bullets.remove(bullet);
             }
         }
-        if (Enemy.getAmountOfEnemiesKilled() % 15 == 0){ //every 15 kills you get a powerupHandler
-            unclaimedPowerups = Enemy.getAmountOfEnemiesKilled()/15-usedPowerups;
+        if (Enemy.getAmountOfEnemiesKilled() % 16 == 0){ //every 16 kills you get a powerup
+            unclaimedPowerups = Enemy.getAmountOfEnemiesKilled()/16-usedPowerups;
         }
+
     }
 
     @Override
     public void draw(PGraphics g) {
+        if (health <= 0){
+            world.pauseGame();
+            g.textSize(70);
+            g.fill(0);
+            g.text("Game over", world.getWidth()/2 + 3, world.getHeight()/2 + 3);
+            g.fill(255);
+            g.text("Game over", world.getWidth()/2, world.getHeight()/2);
+        }
     }
 
     /**
      * Starts an alarm to delay the amount of bullets you can shoot per second
      */
-    private void startAlarm() {
+    private void startAlarmFireDelay() {
         Alarm alarm = new Alarm("Fire delay", reloadTime);
+        alarm.addTarget(this);
+        alarm.start();
+    }
+
+    /**
+     * Starts an alarm to delay the regeneration of your health
+     */
+    private void startAlarmRegenDelay(){
+        Alarm alarm = new Alarm("Regen delay", regenTime);
         alarm.addTarget(this);
         alarm.start();
     }
 
     @Override
     public void triggerAlarm(String alarmName) {
-        if (firing && gunIsReloaded)
-            fireBullet(mouseX, mouseY);
-        gunIsReloaded = true;
-        startAlarm();
+        switch (alarmName){
+            case "Fire delay":
+                if (firing && gunIsReloaded)
+                    fireBullet(mouseX, mouseY);
+                gunIsReloaded = true;
+                startAlarmFireDelay();
+                break;
+            case "Regen delay":
+                regen();
+                startAlarmRegenDelay();
+                break;
+        }
     }
 
     @Override
@@ -91,6 +116,13 @@ public class Base extends GameObject implements IAlarmListener {
     public void mouseDragged(int x, int y, int button) {
         mouseX = x;
         mouseY = y;
+    }
+
+    public void regen(){
+        final int REGENAMOUNT = 1;
+        if (health + REGENAMOUNT >= maxHealth)
+            return;
+        health += REGENAMOUNT;
     }
 
     /**
@@ -125,9 +157,26 @@ public class Base extends GameObject implements IAlarmListener {
         return maxHealth;
     }
 
+    public int getBulletDamage() {
+        return bulletDamage;
+    }
+
+    public float getBulletSpeed() {
+        return bulletSpeed;
+    }
+
+    public float getReloadTime() {
+        return reloadTime;
+    }
+
+    public float getRegenTime() {
+        return regenTime;
+    }
+
     public int getUnclaimedPowerups() {
         return unclaimedPowerups;
     }
+
 
     public void setUnclaimedPowerups(int unclaimedPowerups) {
         this.unclaimedPowerups = unclaimedPowerups;

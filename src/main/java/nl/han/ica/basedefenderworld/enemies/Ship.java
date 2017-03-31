@@ -34,7 +34,7 @@ public class Ship extends Enemy implements IAlarmListener {
 
     }
 
-    private void delayGameObjectDeletion(){
+    private void delayGameObjectDeletion(){ //TODO: of afmaken (animated sprite) of verwijderen
         Alarm alarm = new Alarm("Delete on die delay", 1);
         alarm.addTarget(this);
         alarm.start();

@@ -9,10 +9,11 @@ import nl.han.ica.basedefenderworld.player.Base;
 public class HealthPowerup implements IPowerup {
     private Base base;
     private int progress;
-    private final int INCREASEMENT = 10; //increasement of maximum health in percentages
+    private final int INCREASEMENT = 15; //increasement of maximum health in percentages
 
     public HealthPowerup(Base base) {
         this.base = base;
+        progress = 1;
     }
 
     @Override
@@ -20,9 +21,8 @@ public class HealthPowerup implements IPowerup {
         progress++;
         int maxHealth = base.getMaxHealth();
         base.setMaxHealth(maxHealth + (maxHealth / 100 * INCREASEMENT));
-        base.setHealth(maxHealth);
+        base.setHealth(base.getHealth() + 20);
         base.decreaseUnclaimedPowerups();
-        System.out.println(maxHealth);
     }
 
     @Override

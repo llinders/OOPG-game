@@ -11,7 +11,7 @@ public abstract class Enemy extends SpriteObject implements ICollidableWithGameO
     protected Sprite sprite;
     protected int maxHealth, health;
     protected float movementSpeed;
-    protected static int nEnemiesKilled = 150;
+    protected static int nEnemiesKilled;
 
     public Enemy(BaseDefenderWorld world, Sprite sprite, int health, float movementSpeed) {
         super(sprite);

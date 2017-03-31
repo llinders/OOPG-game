@@ -3,9 +3,11 @@ package nl.han.ica.basedefenderworld;
 import nl.han.ica.OOPDProcessingEngineHAN.Dashboard.Dashboard;
 import nl.han.ica.OOPDProcessingEngineHAN.Engine.GameEngine;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.Sprite;
-import nl.han.ica.OOPDProcessingEngineHAN.Persistence.IPersistence;
 import nl.han.ica.OOPDProcessingEngineHAN.View.View;
+import nl.han.ica.basedefenderworld.enemies.Enemy;
 import nl.han.ica.basedefenderworld.enemies.EnemySpawner;
+import nl.han.ica.basedefenderworld.dashboard.PowerupBoard;
+import nl.han.ica.basedefenderworld.dashboard.Scoreboard;
 import nl.han.ica.basedefenderworld.player.Base;
 import nl.han.ica.basedefenderworld.player.Cannon;
 import nl.han.ica.basedefenderworld.player.powerups.PowerupHandler;
@@ -15,9 +17,8 @@ import processing.core.PImage;
 import java.awt.*;
 
 public class BaseDefenderWorld extends GameEngine {
-    private PowerupBoard dashboardText;
-    private IPersistence persistence;
-    private EnemySpawner enemySpawner;
+    private PowerupHandler powerupHandler;
+    private Base base;
 
     public static void main(String[] args) {
         PApplet.main(new String[]{"nl.han.ica.basedefenderworld.BaseDefenderWorld"});
@@ -29,13 +30,20 @@ public class BaseDefenderWorld extends GameEngine {
         int width = (int) screenSize.getWidth();
         int height = (int) screenSize.getHeight();
         createView(width, height);
-        createDashboard((int) (width / 3.5), (int) (height / 4.6));
         createObjects();
+        createDashboard((int) (width / 3.5), (int) (height / 4.6));
     }
 
     @Override
     public void update() {
+    }
 
+    /**
+     * Calculate the round you are currently in based on how many enemies have died
+     * @return the round number
+     */
+    public int calculateRound() {
+        return (int) Math.sqrt(Enemy.getAmountOfEnemiesKilled() - 2) + 1;
     }
 
     /**
@@ -57,9 +65,9 @@ public class BaseDefenderWorld extends GameEngine {
 
     private void createObjects() {
         int baseSize = height / 34 * 13; //base exists of 14 tiles each 32 pixels width/height
-        Base base = new Base(this, baseSize);
+        base = new Base(this, baseSize);
         Cannon cannon = new Cannon();
-        PowerupHandler powerupHandler = new PowerupHandler(base);
+        powerupHandler = new PowerupHandler(base);
         addGameObject(cannon, getWidth() / 2 - cannon.getWidth() / 3.5f, getHeight() / 2 - cannon.getHeight() / 2.5f, 3);
         addGameObject(base, getWidth() / 2 - baseSize / 2, getHeight() / 2 - baseSize / 2, 1);
         addGameObject(powerupHandler);
@@ -67,13 +75,17 @@ public class BaseDefenderWorld extends GameEngine {
     }
 
     private void createDashboard(int dashboardWidth, int dashboardHeight) {
-        Dashboard dashboard = new Dashboard(getWidth() / 2 - dashboardWidth / 2, getHeight() - dashboardHeight - height / 25, dashboardWidth, dashboardHeight);
-        dashboardText = new PowerupBoard(dashboard);
-        Sprite background;
-        background = new Sprite("nl/han/ica/basedefenderworld/data/Bord.png");
-        dashboard.setBackgroundImage(background);
-        dashboard.addGameObject(dashboardText);
-        addDashboard(dashboard);
+        Dashboard powerUpDashboard = new Dashboard(getWidth() / 2 - dashboardWidth / 2, getHeight() - dashboardHeight - height / 25, dashboardWidth, dashboardHeight);
+        PowerupBoard dashboardContent = new PowerupBoard(powerUpDashboard, powerupHandler);
+        Sprite background = new Sprite("nl/han/ica/basedefenderworld/data/Bord.png");
+        powerUpDashboard.setBackgroundImage(background);
+        powerUpDashboard.addGameObject(dashboardContent);
+        addDashboard(powerUpDashboard);
+        Dashboard scoreDashboard = new Dashboard(getWidth()/2-dashboardWidth/2, height/100, dashboardWidth,dashboardHeight);
+        Scoreboard scoreboardContent = new Scoreboard(scoreDashboard, base, this);
+        scoreDashboard.setBackgroundImage(background);
+        scoreDashboard.addGameObject(scoreboardContent);
+        addDashboard(scoreDashboard);
 
     }
 }

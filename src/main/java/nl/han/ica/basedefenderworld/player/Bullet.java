@@ -24,8 +24,8 @@ public class Bullet extends GameObject {
     }
 
     public void draw(PGraphics g) {
-        g.noStroke();
-        g.fill(110,255,0);
+        g.stroke(60);
+        g.fill(180);
         g.ellipseMode(PConstants.CENTER);
         g.ellipse(getX(), getY(), radius, radius);
     }
