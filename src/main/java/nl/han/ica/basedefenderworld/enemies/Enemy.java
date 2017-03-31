@@ -27,12 +27,6 @@ public abstract class Enemy extends SpriteObject implements ICollidableWithGameO
         }
     }
 
-    @Override
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
-        super.setSprite(sprite);
-    }
-
     public abstract void attack(GameObject g);
 
     public static int getAmountOfEnemiesKilled() {

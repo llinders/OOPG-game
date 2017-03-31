@@ -6,21 +6,18 @@ import nl.han.ica.basedefenderworld.player.Base;
 import processing.core.PGraphics;
 
 /**
- *
+ * Handles the powerup progress
+ * Keeps track of whether a key is pressed and a powerup is available and executes the powerup() function
  */
-public class Powerup extends GameObject implements IKeyInput {
+public class PowerupHandler extends GameObject implements IKeyInput {
     private Base base;
     private IPowerup currentPowerup;
     private HealthPowerup healthPowerup;
-    private final int MAXPROGRESS = 5;
+    private final int MAXPROGRESS = 8;
 
-    public Powerup(Base base) {
+    public PowerupHandler(Base base) {
         this.base = base;
         healthPowerup = new HealthPowerup(base);
-    }
-
-    public void powerup() {
-
     }
 
     @Override

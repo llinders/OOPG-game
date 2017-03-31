@@ -8,14 +8,14 @@ import nl.han.ica.OOPDProcessingEngineHAN.View.View;
 import nl.han.ica.basedefenderworld.enemies.EnemySpawner;
 import nl.han.ica.basedefenderworld.player.Base;
 import nl.han.ica.basedefenderworld.player.Cannon;
+import nl.han.ica.basedefenderworld.player.powerups.PowerupHandler;
 import processing.core.PApplet;
-import processing.core.PGraphics;
 import processing.core.PImage;
 
 import java.awt.*;
 
 public class BaseDefenderWorld extends GameEngine {
-    private TextObject dashboardText;
+    private PowerupBoard dashboardText;
     private IPersistence persistence;
     private EnemySpawner enemySpawner;
 
@@ -35,11 +35,12 @@ public class BaseDefenderWorld extends GameEngine {
 
     @Override
     public void update() {
-        refreshDashboardText();
+
     }
 
     /**
      * Creates the current view for the game
+     *
      * @param width  set the width of the application's frame
      * @param height set the height of the application's frame
      */
@@ -58,14 +59,16 @@ public class BaseDefenderWorld extends GameEngine {
         int baseSize = height / 34 * 13; //base exists of 14 tiles each 32 pixels width/height
         Base base = new Base(this, baseSize);
         Cannon cannon = new Cannon();
-        addGameObject(cannon, getWidth() / 2 - cannon.getWidth()/3.5f, getHeight() / 2 - cannon.getHeight()/2.5f, 3);
+        PowerupHandler powerupHandler = new PowerupHandler(base);
+        addGameObject(cannon, getWidth() / 2 - cannon.getWidth() / 3.5f, getHeight() / 2 - cannon.getHeight() / 2.5f, 3);
         addGameObject(base, getWidth() / 2 - baseSize / 2, getHeight() / 2 - baseSize / 2, 1);
+        addGameObject(powerupHandler);
         EnemySpawner enemySpawner = new EnemySpawner(this);
     }
 
     private void createDashboard(int dashboardWidth, int dashboardHeight) {
-        Dashboard dashboard = new Dashboard(getWidth()/2-dashboardWidth/2, getHeight()-dashboardHeight-height/25, dashboardWidth, dashboardHeight);
-        dashboardText = new TextObject("", dashboard);
+        Dashboard dashboard = new Dashboard(getWidth() / 2 - dashboardWidth / 2, getHeight() - dashboardHeight - height / 25, dashboardWidth, dashboardHeight);
+        dashboardText = new PowerupBoard(dashboard);
         Sprite background;
         background = new Sprite("nl/han/ica/basedefenderworld/data/Bord.png");
         dashboard.setBackgroundImage(background);
@@ -73,9 +76,4 @@ public class BaseDefenderWorld extends GameEngine {
         addDashboard(dashboard);
 
     }
-
-    private void refreshDashboardText() {
-        dashboardText.setText("Ronde: ");
-    }
-
 }

@@ -11,13 +11,13 @@ import nl.han.ica.basedefenderworld.player.Bullet;
 import java.util.List;
 
 public class Skeleton extends Enemy implements IAlarmListener {
-    private float attackDelay, angle;
-    private boolean attacking, attackDelayExpired;
+    private float angle;
+    private boolean attacking, attackDelayExpired, dying;
     private final int DAMAGE = 1;
+    private final float ATTACKDELAY = 0.8f; //attack animation is 8 frames delayed with 100 ms = 800 ms for full attack
 
-    public Skeleton(BaseDefenderWorld world, Sprite sprite, int health, float movementSpeed, float attackDelay, int x, int y) {
+    public Skeleton(BaseDefenderWorld world, Sprite sprite, int health, float movementSpeed, int x, int y) {
         super(world, sprite, health, movementSpeed);
-        this.attackDelay = attackDelay;
         maxHealth = health;
         setX(x);
         setY(y);
@@ -29,9 +29,12 @@ public class Skeleton extends Enemy implements IAlarmListener {
 
     @Override
     public void update() {
-        if (health <= 0) {
+        if (health <= 0 && !dying) { //don't re-execute this code when the skeleton is already dying
+            dying = true;
+            setSpeed(0);
+            setSprite(new Sprite("nl/han/ica/basedefenderworld/data/animations/skeleton_dying.gif"));
             nEnemiesKilled++;
-            world.deleteGameObject(this);
+            delayGameObjectDeletion();
         }
     }
 
@@ -39,10 +42,19 @@ public class Skeleton extends Enemy implements IAlarmListener {
     public void triggerAlarm(String alarmName) {
         attackDelayExpired = true;
         startAlarm();
+        if (alarmName.equals("Delete on die delay")){
+            world.deleteGameObject(this);
+        }
     }
 
     private void startAlarm() {
-        Alarm alarm = new Alarm("Attack delay", attackDelay);
+        Alarm alarm = new Alarm("Attack delay", ATTACKDELAY);
+        alarm.addTarget(this);
+        alarm.start();
+    }
+
+    private void delayGameObjectDeletion(){
+        Alarm alarm = new Alarm("Delete on die delay", ATTACKDELAY);
         alarm.addTarget(this);
         alarm.start();
     }

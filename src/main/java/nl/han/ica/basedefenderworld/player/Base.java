@@ -5,14 +5,13 @@ import nl.han.ica.OOPDProcessingEngineHAN.Alarm.IAlarmListener;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
 import nl.han.ica.basedefenderworld.BaseDefenderWorld;
 import nl.han.ica.basedefenderworld.enemies.Enemy;
-import nl.han.ica.basedefenderworld.player.powerups.Powerup;
+import nl.han.ica.basedefenderworld.player.powerups.PowerupHandler;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
 
 public class Base extends GameObject implements IAlarmListener {
     private BaseDefenderWorld world;
-    private Powerup powerup;
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private int size, health, maxHealth, bulletDamage, unclaimedPowerups, usedPowerups;
     private int mouseX, mouseY;
@@ -30,8 +29,6 @@ public class Base extends GameObject implements IAlarmListener {
         regenTime = 30.0f;
         reloadTime = 0.75f;
         gunIsReloaded = true;
-        powerup = new Powerup(this);
-        world.addGameObject(powerup);
 
         setWidth(size);
         setHeight(size);
@@ -48,7 +45,7 @@ public class Base extends GameObject implements IAlarmListener {
                 bullets.remove(bullet);
             }
         }
-        if (Enemy.getAmountOfEnemiesKilled() % 15 == 0){ //every 15 kills you get a powerup
+        if (Enemy.getAmountOfEnemiesKilled() % 15 == 0){ //every 15 kills you get a powerupHandler
             unclaimedPowerups = Enemy.getAmountOfEnemiesKilled()/15-usedPowerups;
         }
     }

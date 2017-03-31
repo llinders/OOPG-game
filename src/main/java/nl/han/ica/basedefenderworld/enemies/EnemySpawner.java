@@ -119,7 +119,7 @@ public class EnemySpawner implements IAlarmListener {
         switch (currentEnemy) {
             case SKELETON:
                 Sprite skeletonSprite = new Sprite("src/main/java/nl/han/ica/basedefenderworld/data/animations/skeleton_walking.gif");
-                Skeleton skeleton = new Skeleton(world, skeletonSprite, 20, 1, 0.6f, (int) pos.x, (int) pos.y);
+                Skeleton skeleton = new Skeleton(world, skeletonSprite, 20, 1, (int) pos.x, (int) pos.y);
                 world.addGameObject(skeleton, (int) pos.x, (int) pos.y);
                 break;
             case SHIP:
