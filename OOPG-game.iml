@@ -22,7 +22,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="core-2.2.1.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/core/2.2.1/core-2.2.1.jar!/" />
@@ -31,7 +31,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="gifanimation-1.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/gifanimation/1.0/gifanimation-1.0.jar!/" />
@@ -40,7 +40,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="sound-1.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/sound/1.0/sound-1.0.jar!/" />
@@ -49,7 +49,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="jl-1.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/sound/jl/1.0/jl-1.0.jar!/" />
@@ -58,7 +58,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="jsminim-1.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/sound/jsminim/1.0/jsminim-1.0.jar!/" />
@@ -67,7 +67,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="minim-1.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/sound/minim/1.0/minim-1.0.jar!/" />
@@ -76,7 +76,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="mp3spi-1.9.4.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/sound/mp3spi/1.9.4/mp3spi-1.9.4.jar!/" />
@@ -85,7 +85,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="tritonus_aos-1.9.4.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/sound/tritonus_aos/1.9.4/tritonus_aos-1.9.4.jar!/" />
@@ -94,7 +94,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="tritonus_share-1.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/processing/sound/tritonus_share/1.0/tritonus_share-1.0.jar!/" />

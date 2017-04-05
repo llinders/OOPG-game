@@ -13,15 +13,15 @@ public class DamagePowerup implements IPowerup {
     }
 
     @Override
-    public void powerup(){
+    public void powerup() {
         progress++;
         int damage = base.getBulletDamage();
-        base.setBulletDamage(damage + (damage * INCREASEMENT/100));
+        base.setBulletDamage(damage + (damage * INCREASEMENT / 100));
         base.decreaseUnclaimedPowerups();
     }
 
     @Override
-    public int getProgress(){
+    public int getProgress() {
         return progress;
     }
 }

@@ -42,7 +42,7 @@ public class Skeleton extends Enemy implements IAlarmListener {
     public void triggerAlarm(String alarmName) {
         attackDelayExpired = true;
         startAlarm();
-        if (alarmName.equals("Delete on die delay")){
+        if (alarmName.equals("Delete on die delay")) {
             world.deleteGameObject(this);
         }
     }
@@ -53,12 +53,17 @@ public class Skeleton extends Enemy implements IAlarmListener {
         alarm.start();
     }
 
-    private void delayGameObjectDeletion(){
+    private void delayGameObjectDeletion() {
         Alarm alarm = new Alarm("Delete on die delay", ATTACKDELAY);
         alarm.addTarget(this);
         alarm.start();
     }
 
+    /**
+     * Makes the skeleton attack the GameObject.
+     *
+     * @param g the GameObject which the skeleton is currently attacking.
+     */
     @Override
     public void attack(GameObject g) {
         if (attackDelayExpired) {
@@ -83,9 +88,10 @@ public class Skeleton extends Enemy implements IAlarmListener {
 
     /**
      * Set the skeleton in attacking mode, which means the animation gets updated and the skeleton no longer moves
+     *
      * @param g the GameObject which the skeleton is currently attacking
      */
-    private void attackMode(GameObject g){
+    private void attackMode(GameObject g) {
         setSpeed(0);
         attack(g);
         if (!attacking) {

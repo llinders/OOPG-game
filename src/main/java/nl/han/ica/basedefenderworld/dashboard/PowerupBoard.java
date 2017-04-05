@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class PowerupBoard extends GameObject {
     private Dashboard dashboard;
+    private PowerupHandler powerupHandler;
     private final String[] UPGRADENAMEN = {"[1] Health:", "[2] Regen time:", "[3] Damage:", "[4] Reload time:"};
     private ArrayList<IPowerup> powerups;
     private ArrayList<Integer> powerupProgress;
-    private PowerupHandler powerupHandler;
 
     public PowerupBoard(Dashboard dashboard, PowerupHandler powerupHandler) {
         this.dashboard = dashboard;
@@ -33,7 +33,7 @@ public class PowerupBoard extends GameObject {
     }
 
     private void updatePowerupProgress() {
-        for (int i = powerupProgress.size()-1; i >= 0; i--) {
+        for (int i = powerupProgress.size() - 1; i >= 0; i--) {
             powerupProgress.remove(i);
         }
         for (IPowerup powerup : powerups) {
@@ -47,7 +47,7 @@ public class PowerupBoard extends GameObject {
         int nPowerups = powerupProgress.size();
         g.fill(101, 67, 33);
         g.textSize(dashboard.getHeight() / 10);
-        g.text("Power-up Points: " + powerupHandler.getUnclaimedPowerUps(), dashboard.getWidth() / 3.3f, dashboard.getHeight() / 23 - radius / 2);
+        g.text("Power-up Points: " + powerupHandler.getUnclaimedPowerups(), dashboard.getWidth() / 3.3f, dashboard.getHeight() / 23 - radius / 2);
         for (int i = 0; i < nPowerups; i++) {
             g.fill(101, 67, 33);
             g.textSize(dashboard.getHeight() / 11);

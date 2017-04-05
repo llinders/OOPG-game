@@ -5,6 +5,7 @@ import nl.han.ica.OOPDProcessingEngineHAN.Alarm.IAlarmListener;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
 import nl.han.ica.basedefenderworld.BaseDefenderWorld;
 import nl.han.ica.basedefenderworld.enemies.Enemy;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
@@ -44,22 +45,32 @@ public class Base extends GameObject implements IAlarmListener {
                 bullets.remove(bullet);
             }
         }
-        if (Enemy.getAmountOfEnemiesKilled() % 16 == 0){ //every 16 kills you get a powerup
-            unclaimedPowerups = Enemy.getAmountOfEnemiesKilled()/16-usedPowerups;
-        }
-
+        unclaimedPowerups = Enemy.getAmountOfEnemiesKilled() / 16 - usedPowerups;
     }
 
     @Override
     public void draw(PGraphics g) {
-        if (health <= 0){
+        if (health <= 0) {
+            health = 0;
             world.pauseGame();
             g.textSize(70);
             g.fill(0);
-            g.text("Game over", world.getWidth()/2 + 3, world.getHeight()/2 + 3);
+            g.textAlign(PConstants.CENTER);
+            g.text("Game over", world.getWidth() / 2 + 3, world.getHeight() / 2 + 3);
             g.fill(255);
-            g.text("Game over", world.getWidth()/2, world.getHeight()/2);
+            g.text("Game over", world.getWidth() / 2, world.getHeight() / 2);
+            g.textSize(40);
+            g.fill(0);
+            g.text("Press ENTER to restart", world.getWidth() / 2 + 3, world.getHeight() / 1.85f + 3);
+            g.fill(255);
+            g.text("Press ENTER to restart", world.getWidth() / 2, world.getHeight() / 1.85f);
         }
+    }
+
+    @Override
+    public void keyPressed(int keyCode, char key) {
+        if (keyCode == 10 && world.getThreadState())
+            world.resetGame();
     }
 
     /**
@@ -74,7 +85,7 @@ public class Base extends GameObject implements IAlarmListener {
     /**
      * Starts an alarm to delay the regeneration of your health
      */
-    private void startAlarmRegenDelay(){
+    private void startAlarmRegenDelay() {
         Alarm alarm = new Alarm("Regen delay", regenTime);
         alarm.addTarget(this);
         alarm.start();
@@ -82,7 +93,7 @@ public class Base extends GameObject implements IAlarmListener {
 
     @Override
     public void triggerAlarm(String alarmName) {
-        switch (alarmName){
+        switch (alarmName) {
             case "Fire delay":
                 if (firing && gunIsReloaded)
                     fireBullet(mouseX, mouseY);
@@ -90,21 +101,25 @@ public class Base extends GameObject implements IAlarmListener {
                 startAlarmFireDelay();
                 break;
             case "Regen delay":
-                regen();
-                startAlarmRegenDelay();
-                break;
+                if (!world.getThreadState()) {
+                    regen();
+                    startAlarmRegenDelay();
+                    break;
+                }
         }
     }
 
     @Override
     public void mousePressed(int x, int y, int button) {
-        if (gunIsReloaded) {
-            fireBullet(x, y);
-            gunIsReloaded = false;
+        if (!world.getThreadState()) {
+            if (gunIsReloaded) {
+                fireBullet(x, y);
+                gunIsReloaded = false;
+            }
+            firing = true;
+            mouseX = x;
+            mouseY = y;
         }
-        firing = true;
-        mouseX = x;
-        mouseY = y;
     }
 
     @Override
@@ -118,7 +133,7 @@ public class Base extends GameObject implements IAlarmListener {
         mouseY = y;
     }
 
-    public void regen(){
+    public void regen() {
         final int REGENAMOUNT = 1;
         if (health + REGENAMOUNT >= maxHealth)
             return;
@@ -141,11 +156,11 @@ public class Base extends GameObject implements IAlarmListener {
         bullet.setSpeed(bulletSpeed);
     }
 
-    public void increaseUsedPowerups(){
+    public void increaseUsedPowerups() {
         usedPowerups++;
     }
 
-    public void decreaseUnclaimedPowerups(){
+    public void decreaseUnclaimedPowerups() {
         unclaimedPowerups--;
     }
 

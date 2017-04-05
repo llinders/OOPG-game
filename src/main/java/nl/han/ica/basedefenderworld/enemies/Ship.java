@@ -1,7 +1,5 @@
 package nl.han.ica.basedefenderworld.enemies;
 
-import nl.han.ica.OOPDProcessingEngineHAN.Alarm.Alarm;
-import nl.han.ica.OOPDProcessingEngineHAN.Alarm.IAlarmListener;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.GameObject;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.Sprite;
 import nl.han.ica.basedefenderworld.BaseDefenderWorld;
@@ -12,7 +10,7 @@ import processing.core.PGraphics;
 
 import java.util.List;
 
-public class Ship extends Enemy implements IAlarmListener {
+public class Ship extends Enemy {
     private float angle;
     private int shipNr;
     private final int DAMAGE = 15;
@@ -29,17 +27,11 @@ public class Ship extends Enemy implements IAlarmListener {
         setDirection(angle);
     }
 
-    @Override
-    public void triggerAlarm(String alarmName){
-
-    }
-
-    private void delayGameObjectDeletion(){ //TODO: of afmaken (animated sprite) of verwijderen
-        Alarm alarm = new Alarm("Delete on die delay", 1);
-        alarm.addTarget(this);
-        alarm.start();
-    }
-
+    /**
+     * Makes the ship attack the GameObject.
+     *
+     * @param g the GameObject which the ship is currently attacking.
+     */
     @Override
     public void attack(GameObject g) {
         ((Base) g).setHealth(((Base) g).getHealth() - DAMAGE);

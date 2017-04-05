@@ -14,11 +14,14 @@ public class Bullet extends GameObject {
         setWidth(1);
     }
 
-
     public void update() {
 
     }
 
+    /**
+     * Returns the damage the bullet does to an object.
+     * @return damage the bullet does.
+     */
     public int getDamage() {
         return damage;
     }

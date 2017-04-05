@@ -31,12 +31,14 @@ public class EnemySpawner implements IAlarmListener {
      * @param alarmName
      */
     public void triggerAlarm(String alarmName) {
-        round = world.calculateRound();
-        spawnDelay = calculateSpawnDelay();
-        currentEnemy = getRandomEnemy();
-        PVector pos = calculateRandomEnemyPos(currentEnemy);
-        spawnEnemy(currentEnemy, pos);
-        startAlarm();
+        if (world.getThreadState() == false) {
+            round = world.calculateRound();
+            spawnDelay = calculateSpawnDelay();
+            currentEnemy = getRandomEnemy();
+            PVector pos = calculateRandomEnemyPos(currentEnemy);
+            spawnEnemy(currentEnemy, pos);
+            startAlarm();
+        }
     }
 
     private void startAlarm() {
@@ -67,14 +69,14 @@ public class EnemySpawner implements IAlarmListener {
         switch (enemy) {
             case SKELETON:
                 int randomSkeleton = rnd.nextInt(2);
-                switch (randomSkeleton){
+                switch (randomSkeleton) {
                     case 0:
-                        x = world.getWidth();
+                        x = rnd.nextInt(200) + world.getWidth();
                         y = rnd.nextInt(world.getHeight() - 200);
                         break;
                     case 1:
                         x = world.getWidth() - rnd.nextInt((int) (world.getWidth() / 3.5));
-                        y = 0;
+                        y = -rnd.nextInt(200);
                         break;
                     default:
                         x = 0;
@@ -85,12 +87,12 @@ public class EnemySpawner implements IAlarmListener {
                 int randomShip = rnd.nextInt(3);
                 switch (randomShip) {
                     case 0:
-                        x = 0;
+                        x = -100;
                         y = rnd.nextInt(world.getHeight());
                         break;
                     case 1:
                         x = rnd.nextInt((int) (world.getWidth() / 4.5));
-                        y = 0;
+                        y = -100;
                         break;
                     case 2:
                         x = rnd.nextInt((int) (world.getWidth() / 4.5));

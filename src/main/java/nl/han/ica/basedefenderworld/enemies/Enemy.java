@@ -32,4 +32,8 @@ public abstract class Enemy extends SpriteObject implements ICollidableWithGameO
     public static int getAmountOfEnemiesKilled() {
         return nEnemiesKilled;
     }
+
+    public static void resetKills() {
+        nEnemiesKilled = 0;
+    }
 }

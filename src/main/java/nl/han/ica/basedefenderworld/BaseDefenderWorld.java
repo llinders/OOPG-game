@@ -4,10 +4,10 @@ import nl.han.ica.OOPDProcessingEngineHAN.Dashboard.Dashboard;
 import nl.han.ica.OOPDProcessingEngineHAN.Engine.GameEngine;
 import nl.han.ica.OOPDProcessingEngineHAN.Objects.Sprite;
 import nl.han.ica.OOPDProcessingEngineHAN.View.View;
-import nl.han.ica.basedefenderworld.enemies.Enemy;
-import nl.han.ica.basedefenderworld.enemies.EnemySpawner;
 import nl.han.ica.basedefenderworld.dashboard.PowerupBoard;
 import nl.han.ica.basedefenderworld.dashboard.Scoreboard;
+import nl.han.ica.basedefenderworld.enemies.Enemy;
+import nl.han.ica.basedefenderworld.enemies.EnemySpawner;
 import nl.han.ica.basedefenderworld.player.Base;
 import nl.han.ica.basedefenderworld.player.Cannon;
 import nl.han.ica.basedefenderworld.player.powerups.PowerupHandler;
@@ -24,6 +24,10 @@ public class BaseDefenderWorld extends GameEngine {
         PApplet.main(new String[]{"nl.han.ica.basedefenderworld.BaseDefenderWorld"});
     }
 
+
+    /**
+     * Calls the functions to create the view, objects and dashboards.
+     */
     @Override
     public void setupGame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -40,6 +44,7 @@ public class BaseDefenderWorld extends GameEngine {
 
     /**
      * Calculate the round you are currently in based on how many enemies have died
+     *
      * @return the round number
      */
     public int calculateRound() {
@@ -67,9 +72,9 @@ public class BaseDefenderWorld extends GameEngine {
         int baseSize = height / 34 * 13; //base exists of 14 tiles each 32 pixels width/height
         base = new Base(this, baseSize);
         Cannon cannon = new Cannon();
-        powerupHandler = new PowerupHandler(base);
+        powerupHandler = new PowerupHandler(this, base);
         addGameObject(cannon, getWidth() / 2 - cannon.getWidth() / 3.5f, getHeight() / 2 - cannon.getHeight() / 2.5f, 3);
-        addGameObject(base, getWidth() / 2 - baseSize / 2, getHeight() / 2 - baseSize / 2, 1);
+        addGameObject(base, getWidth() / 2 - baseSize / 2, getHeight() / 2 - baseSize / 2, 4);
         addGameObject(powerupHandler);
         EnemySpawner enemySpawner = new EnemySpawner(this);
     }
@@ -81,11 +86,26 @@ public class BaseDefenderWorld extends GameEngine {
         powerUpDashboard.setBackgroundImage(background);
         powerUpDashboard.addGameObject(dashboardContent);
         addDashboard(powerUpDashboard);
-        Dashboard scoreDashboard = new Dashboard(getWidth()/2-dashboardWidth/2, height/100, dashboardWidth,dashboardHeight);
-        Scoreboard scoreboardContent = new Scoreboard(scoreDashboard, base, this);
+        Dashboard scoreDashboard = new Dashboard(getWidth() / 2 - dashboardWidth / 2, height / 100, dashboardWidth, dashboardHeight);
+        Scoreboard scoreboardContent = new Scoreboard(this, scoreDashboard, base);
         scoreDashboard.setBackgroundImage(background);
         scoreDashboard.addGameObject(scoreboardContent);
         addDashboard(scoreDashboard);
 
+    }
+
+    /**
+     * Resets and restarts the game. Recreates all gameobjects and dashboards and resets your score and round.
+     */
+    public void resetGame() {
+        deleteEverything();
+        resumeGame();
+        setupGame();
+    }
+
+    private void deleteEverything() {
+        Enemy.resetKills();
+        deleteAllGameOBjects();
+        deleteAllDashboards();
     }
 }

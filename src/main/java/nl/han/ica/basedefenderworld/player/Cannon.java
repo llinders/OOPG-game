@@ -6,7 +6,6 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class Cannon extends SpriteObject {
-    private float x, y, length;
     private int mouseX, mouseY;
     private float rotatiehoek;
 
@@ -19,11 +18,9 @@ public class Cannon extends SpriteObject {
         super(sprite);
     }
 
-
-
     @Override
-    public void update(){
-         rotatiehoek = getAngleFrom(mouseX, mouseY);
+    public void update() {
+        rotatiehoek = getAngleFrom(mouseX, mouseY);
     }
 
     @Override
@@ -42,6 +39,7 @@ public class Cannon extends SpriteObject {
                 : rotationInRadians);
         return rotationInRadians;
     }
+
     @Override
 
     public float getWidth() {
@@ -51,28 +49,31 @@ public class Cannon extends SpriteObject {
         return (float) (Math.sin(rotationInRadians) * height +
                 Math.cos(rotationInRadians) * width);
     }
+
     @Override
     public float getHeight() {
         float rotationInRadians = getRotationInRadians(rotatiehoek);
         return (float) (Math.sin(rotationInRadians) * width + Math.cos(rotationInRadians) * height);
     }
+
     @Override
     public float getX() {
         return -(getWidth() / 2) + getCenterX();
     }
+
     @Override
     public float getY() {
         return -(getHeight() / 2) + getCenterY();
     }
 
     @Override
-    public void mouseMoved(int x, int y){
+    public void mouseMoved(int x, int y) {
         mouseX = x;
         mouseY = y;
     }
 
     @Override
-    public void mouseDragged(int x, int y, int button){
+    public void mouseDragged(int x, int y, int button) {
         mouseX = x;
         mouseY = y;
     }

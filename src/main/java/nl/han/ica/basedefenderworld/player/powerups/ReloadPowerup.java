@@ -13,14 +13,14 @@ public class ReloadPowerup implements IPowerup {
     }
 
     @Override
-    public void powerup(){
+    public void powerup() {
         progress++;
         base.setReloadTime(base.getReloadTime() - DECREASEMENT);
         base.decreaseUnclaimedPowerups();
     }
 
     @Override
-    public int getProgress(){
+    public int getProgress() {
         return progress;
     }
 }
